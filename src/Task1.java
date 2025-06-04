@@ -1,0 +1,56 @@
+import java.io.*;
+import java.util.Arrays;
+
+import static java.lang.System.*;
+
+public class Task1 {
+    public static void main(String[] args) {
+
+        photoCopying("/Users/dmitrinedioglo/ait");
+
+    }
+
+    public static void photoCopying(String directory) {
+        File file = new File(directory);
+
+        if (!file.exists()) {
+            System.out.println("Нет такой папки");
+            return;
+        }
+        if (!file.isDirectory()) {
+            System.out.println("Это не папка");
+            return;
+        }
+        File[] list = file.listFiles(f -> f.isFile() && f.getName().endsWith("jpg"));
+        if (list.length == 0) {
+            System.out.println("В папке нету фоток");
+            return;
+        }
+
+        File absoluteFile = file.getAbsoluteFile();
+        File fotoDirectory = new File(absoluteFile + "foto");
+        if (fotoDirectory.mkdirs()) {
+            for (var el : list) {
+
+                try (FileInputStream fis = new FileInputStream(el);
+                     FileOutputStream fos = new FileOutputStream(fotoDirectory)) {
+
+                    byte[] buffer = new byte[4096];
+                    int length;
+
+                    while ((length = fis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, length);
+                    }
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+
+    }
+
+}
+
+
+
