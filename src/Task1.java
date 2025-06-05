@@ -36,11 +36,11 @@ public class Task1 {
             return;
         }
 
-        File absoluteFile = file.getAbsoluteFile();
-        File fotoDirectory = new File(absoluteFile + "foto");
+
+        File fotoDirectory = new File(file , "foto");
         if (fotoDirectory.mkdirs()) {
             for (var el : list) {
-
+                
                 try (FileInputStream fis = new FileInputStream(el);
                      FileOutputStream fos = new FileOutputStream(fotoDirectory)) {
 
